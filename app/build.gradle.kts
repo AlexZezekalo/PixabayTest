@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -21,7 +23,14 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", wrapStr("https://pixabay.com/api/"))
+            buildConfigField("String", "API_KEY", wrapStr("43081277-a33e0a43f24694ad1cb03e0b7"))
+        }
         release {
+            buildConfigField("String", "BASE_URL", wrapStr("https://pixabay.com/api/"))
+            buildConfigField("String", "API_KEY", wrapStr("43081277-a33e0a43f24694ad1cb03e0b7"))
+
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -41,6 +50,9 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+    buildFeatures {
+        buildConfig = true
+    }
 }
 
 dependencies {
@@ -52,7 +64,12 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
+    implementation(libs.hilt.android)
+    kapt (libs.hilt.compiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
+
+fun wrapStr(s: String) = "\"s\""
