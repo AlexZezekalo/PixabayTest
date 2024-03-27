@@ -23,14 +23,7 @@ android {
     }
 
     buildTypes {
-        debug {
-            buildConfigField("String", "BASE_URL", wrapStr("https://pixabay.com/api/"))
-            buildConfigField("String", "API_KEY", wrapStr("43081277-a33e0a43f24694ad1cb03e0b7"))
-        }
-        release {
-            buildConfigField("String", "BASE_URL", wrapStr("https://pixabay.com/api/"))
-            buildConfigField("String", "API_KEY", wrapStr("43081277-a33e0a43f24694ad1cb03e0b7"))
-
+        getByName("release") {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

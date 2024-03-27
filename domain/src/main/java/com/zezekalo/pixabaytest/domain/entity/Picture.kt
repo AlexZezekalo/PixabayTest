@@ -1,7 +1,7 @@
 package com.zezekalo.pixabaytest.domain.entity
 
 data class Picture(
-    val id: String,
+    val id: Int,
     val user: String,
     val tags: List<String>,
     val thumbnailUrl: String,
