@@ -64,5 +64,3 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
-
-fun wrapStr(s: String) = "\"s\""
