@@ -1,9 +1,8 @@
 package com.zezekalo.pixabaytest.data.datasource.remote
 
-import com.zezekalo.pixabaytest.domain.entity.Picture
-import retrofit2.Response
+import com.zezekalo.pixabaytest.data.datasource.remote.entity.RemotePicture
 
 interface RemotePictureDataSource {
 
-    suspend fun getPictures(query: String): Response<List<Picture>>
+    suspend fun getPictures(query: String): List<RemotePicture>
 }
