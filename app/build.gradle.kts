@@ -21,7 +21,19 @@ android {
             useSupportLibrary = true
         }
     }
-
+    flavorDimensions.add("ui")
+    productFlavors {
+        create("viewbinding") {
+            dimension  = "ui"
+            applicationIdSuffix  = ".viewbinding"
+            versionNameSuffix  = "-viewbinding"
+        }
+        create("compose") {
+            dimension = "ui"
+            applicationIdSuffix = ".compose"
+            versionNameSuffix = "-compose"
+        }
+    }
     buildTypes {
         getByName("release") {
             isMinifyEnabled = false

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".fragment.PictureDetailsFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/bigPicture"
+        style="@style/BigImageStyle"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:src = "@android:drawable/btn_star"/>
+
+    <TextView
+        android:id="@+id/user"
+        style="@style/TextStyle"
+        android:layout_marginTop="8dp"
+        app:layout_constraintStart_toEndOf="@id/bigPicture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/bigPicture"
+        tools:text = "User: Ololoshko"/>
+
+    <TextView
+        android:id="@+id/tags"
+        style="@style/TextStyle.Tag.Details"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintStart_toStartOf="@id/user"
+        app:layout_constraintTop_toBottomOf="@id/user"
+        app:layout_constraintBottom_toBottomOf="@id/bigPicture"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.5"
+        tools:text = "Tags: fruits, \n animals, \n vegetables, \n music"/>
+
+    <TextView
+        android:id="@+id/likes"
+        style="@style/TextStyle.Footer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/comments"
+        app:layout_constraintTop_toBottomOf="@id/bigPicture"
+        tools:text = "Likes: 145"/>
+
+    <TextView
+        android:id="@+id/comments"
+        style="@style/TextStyle.Footer"
+        app:layout_constraintStart_toEndOf="@id/likes"
+        app:layout_constraintEnd_toStartOf="@id/downloads"
+        app:layout_constraintTop_toTopOf="@id/likes"
+        tools:text = "Comments: 45"/>
+
+    <TextView
+        android:id="@+id/downloads"
+        style="@style/TextStyle.Footer"
+        app:layout_constraintStart_toEndOf="@id/comments"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintTop_toTopOf="@id/likes"
+        tools:text = "Downloads: 555"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

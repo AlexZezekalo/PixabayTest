@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/picturesFragment">
+
+    <fragment
+        android:id="@+id/picturesFragment"
+        android:name="com.zezekalo.pixabaytest.presentation.fragment.PicturesFragment"
+        android:label="Pictures List"
+        tools:layout = "@layout/fragment_pictures">
+        <action
+            android:id="@+id/action_picturesFragment_to_pictureDetailsFragment"
+            app:destination="@id/pictureDetailsFragment"/>
+    </fragment>
+
+    <dialog
+        android:id="@+id/askDialog">
+        <action
+            android:id="@+id/action_picturesFragment_to_askDialog"/>
+    </dialog>
+
+    <fragment
+        android:id="@+id/pictureDetailsFragment"
+        android:name="com.zezekalo.pixabaytest.presentation.fragment.PictureDetailsFragment"
+        android:label="Picture Details"
+        tools:layout="@layout/fragment_picture_details">
+
+    </fragment>
+
+</navigation>

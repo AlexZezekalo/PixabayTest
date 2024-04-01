@@ -16,6 +16,16 @@ android {
         consumerProguardFiles("consumer-rules.pro")
     }
 
+    flavorDimensions.add("ui")
+    productFlavors {
+        create("viewbinding") {
+            dimension  = "ui"
+        }
+        create("compose") {
+            dimension = "ui"
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -34,6 +44,8 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.kotlinCompilerExtensionVersion.get()
@@ -42,6 +54,16 @@ android {
 
 dependencies {
     implementation(project(":domain"))
+
+    implementation (libs.androidx.appcompat)
+    implementation (libs.material)
+    implementation (libs.constraint.layout)
+    implementation (libs.kotlinx.coroutines.core)
+    implementation (libs.androidx.lifecycle.runtime.ktx)
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    implementation (libs.androidx.activity)
+    implementation (libs.androidx.navigation.fragment.ktx)
+    implementation (libs.androidx.navigation.ui.ktx)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
