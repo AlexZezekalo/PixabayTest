@@ -1,40 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.PicturesFragment">
-
-    <SearchView
-        android:id="@+id/queryInput"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-
-        app:queryHint="Enter "
-        android:text="Simple text"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        style="@style/Fill"
+        tools:context=".ui.fragment.PicturesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/picturesRv"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/queryInput"
-        app:layout_constraintBottom_toTopOf="@id/footer"
-        tools:listitem="@layout/picture_item_layout"/>
+            android:id="@+id/picturesRv"
+            style="@style/Fill"
+            android:paddingVertical="8dp"
+            android:clipToPadding="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+            tools:listitem="@layout/picture_item_layout"/>
 
-    <TextView
-        android:id="@+id/footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="4dp"
-        android:text="@string/pixabay_license_message"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
+            app:statusBarForeground="?attr/colorSurface"
+            android:theme="@style/Theme.Material3.Light">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <com.google.android.material.search.SearchBar
+                android:id="@+id/pictureSearchBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_view_hint">
+        </com.google.android.material.search.SearchBar>
+
+        <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/apiMessage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="4dp"
+                android:text="@string/pixabay_license_message"/>
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:layout_gravity="center"/>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.search.SearchView
+            android:id="@+id/pictureSearchInput"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:imeOptions="actionSearch"
+            android:imeActionLabel="Custom"
+            android:inputType="text"
+            android:maxLines="1"
+            app:iconifiedByDefault="false"
+            android:hint="@string/search_view_hint"
+            app:layout_anchor="@id/pictureSearchBar"
+            android:theme="@style/Theme.Material3.Light"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

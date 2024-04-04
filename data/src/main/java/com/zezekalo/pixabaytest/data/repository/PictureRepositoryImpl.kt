@@ -6,7 +6,9 @@ import com.zezekalo.pixabaytest.data.datasource.remote.RemotePictureDataSource
 import com.zezekalo.pixabaytest.domain.entity.Picture
 import com.zezekalo.pixabaytest.domain.logger.logE
 import com.zezekalo.pixabaytest.domain.repository.PictureRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class PictureRepositoryImpl @Inject constructor(
@@ -20,7 +22,9 @@ class PictureRepositoryImpl @Inject constructor(
     override suspend fun queryPictures(queryString: String): Result<Unit> =
         try {
             val remotePictures = remotePictureDataSource.getPictures(queryString)
-            localPictureDataSource.cleanAndStorePictures(remotePictures.toLocal())
+            withContext(Dispatchers.Default) {
+                localPictureDataSource.cleanAndStorePictures(remotePictures.toLocal())
+            }
             Result.success(Unit)
         } catch (throwable: Throwable) {
             logE("Caught an exception ${throwable.message}", throwable)

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.PixabayTest" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.PixabayTest" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="materialCardViewStyle">@style/Widget.PixabayTest.MaterialCardView</item>
+    </style>
+
+    <style name="Widget.PixabayTest.MaterialCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.PixabayTest.MaterialCardView</item>
+    </style>
+
+    <style name="ShapeAppearanceOverlay.PixabayTest.MaterialCardView" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">12dp</item>
+    </style>
+
 </resources>

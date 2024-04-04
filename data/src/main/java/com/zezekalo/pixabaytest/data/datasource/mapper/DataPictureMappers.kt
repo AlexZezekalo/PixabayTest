@@ -38,9 +38,9 @@ fun RemotePicture.toLocal(): LocalPicture =
     LocalPicture(
         id = id,
         user = user,
-        tagList = LocalTagList(tags),
+        tagList = LocalTagList(tags.split(",")),
         thumbnailUrl = thumbnailUrl,
-        bigImageUrl = bigImageUrl,
+        bigImageUrl = bigImageUrl ?: "",
         likeCount = likeCount,
         downloadCount = downloadCount,
         commentCount = commentCount

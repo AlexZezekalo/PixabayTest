@@ -3,19 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".fragment.PictureDetailsFragment"
+    tools:context=".ui.fragment.PictureDetailsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="8dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/bigPicture"
         style="@style/BigImageStyle"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:src = "@android:drawable/btn_star"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/user"
         style="@style/TextStyle"
         android:layout_marginTop="8dp"
@@ -24,7 +24,7 @@
         app:layout_constraintTop_toTopOf="@id/bigPicture"
         tools:text = "User: Ololoshko"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tags"
         style="@style/TextStyle.Tag.Details"
         android:layout_marginBottom="8dp"
@@ -35,7 +35,7 @@
         app:layout_constraintVertical_bias="0.5"
         tools:text = "Tags: fruits, \n animals, \n vegetables, \n music"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/likes"
         style="@style/TextStyle.Footer"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@id/bigPicture"
         tools:text = "Likes: 145"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/comments"
         style="@style/TextStyle.Footer"
         app:layout_constraintStart_toEndOf="@id/likes"
@@ -51,7 +51,7 @@
         app:layout_constraintTop_toTopOf="@id/likes"
         tools:text = "Comments: 45"/>
 
-    <TextView
+    <com.google.android.material.textview.MaterialTextView
         android:id="@+id/downloads"
         style="@style/TextStyle.Footer"
         app:layout_constraintStart_toEndOf="@id/comments"

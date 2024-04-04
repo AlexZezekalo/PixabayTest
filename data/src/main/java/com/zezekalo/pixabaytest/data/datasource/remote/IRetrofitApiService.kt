@@ -6,7 +6,7 @@ import retrofit2.http.Query
 
 interface IRetrofitApiService {
 
-    @GET("")
+    @GET(".")
     suspend fun getPictures(
         @Query(value = "key") key: String,
         @Query(value = "q") query: String,

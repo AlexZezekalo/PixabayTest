@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/picturesFragment"
-        android:name="com.zezekalo.pixabaytest.presentation.fragment.PicturesFragment"
+        android:name="com.zezekalo.pixabaytest.presentation.ui.fragment.PicturesFragment"
         android:label="Pictures List"
         tools:layout = "@layout/fragment_pictures">
         <action
@@ -16,18 +16,14 @@
             app:destination="@id/pictureDetailsFragment"/>
     </fragment>
 
-    <dialog
-        android:id="@+id/askDialog">
-        <action
-            android:id="@+id/action_picturesFragment_to_askDialog"/>
-    </dialog>
-
     <fragment
         android:id="@+id/pictureDetailsFragment"
-        android:name="com.zezekalo.pixabaytest.presentation.fragment.PictureDetailsFragment"
+        android:name="com.zezekalo.pixabaytest.presentation.ui.fragment.PictureDetailsFragment"
         android:label="Picture Details"
         tools:layout="@layout/fragment_picture_details">
-
+    <argument
+        android:name="picture_id"
+        app:argType="integer"/>
     </fragment>
 
 </navigation>

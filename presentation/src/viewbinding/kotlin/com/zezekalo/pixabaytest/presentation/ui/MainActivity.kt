@@ -1,15 +1,12 @@
-package com.zezekalo.pixabaytest.presentation
+package com.zezekalo.pixabaytest.presentation.ui
 
 import android.os.Bundle
-import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
-import com.zezekalo.pixabaytest.presentation.viewmodel.MainViewModel
+import com.zezekalo.pixabaytest.presentation.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : FragmentActivity() {
-
-    val mainViewModel: MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

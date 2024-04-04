@@ -2,5 +2,9 @@
     <string name="app_name">Pixabay Sample</string>
     <string name="user_template">User: %1$s</string>
     <string name="tags_template">Tags: %1$s</string>
+    <string name="likes_template">Likes:\n%1$s</string>
+    <string name="comments_template">Comments:\n%1$s</string>
+    <string name="downloads_template">Downloads:\n%1$s</string>
     <string name="pixabay_license_message">Images are downloaded from https://pixabay.com</string>
+    <string name="search_view_hint">Enter the query for search</string>
 </resources>
