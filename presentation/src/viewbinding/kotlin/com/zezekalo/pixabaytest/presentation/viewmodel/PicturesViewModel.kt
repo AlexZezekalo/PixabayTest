@@ -18,6 +18,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.getAndUpdate
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import javax.inject.Inject
 
 const val DEFAULT_QUERY = "fruits"
@@ -25,8 +27,11 @@ const val DEFAULT_QUERY = "fruits"
 data class PicturesUiState(
     val pictures: List<UiPicture> = emptyList(),
     val loading: Boolean = false,
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val showDialog: ShowDialogEvent? = null
 )
+
+data class ShowDialogEvent(val pictureId: Int)
 
 @HiltViewModel
 class PicturesViewModel @Inject constructor(
@@ -57,9 +62,29 @@ class PicturesViewModel @Inject constructor(
     val query: StateFlow<String>
         get() = _query
 
+    private val mutex = Mutex()
+
     init {
         launchSafe { repository.picturesFlow.collect(::onPicturesUpdated) }
         queryForPicturesByKey(DEFAULT_QUERY)
+    }
+
+    fun updateUiStateToShowDialogOrHide(pictureId: Int?) {
+        launchSafe {
+            updateUiState {
+                copy(showDialog = pictureId?.let {
+                    ShowDialogEvent(pictureId = it)
+                })
+            }
+        }
+    }
+
+    fun updateUiStateToShowErrorOrNot(errorMessage: String?) {
+        launchSafe {
+            updateUiState {
+                copy(errorMessage = errorMessage)
+            }
+        }
     }
 
     private fun queryForPicturesByKey(key: String) {
@@ -72,19 +97,25 @@ class PicturesViewModel @Inject constructor(
     }
 
     private fun onFail(throwable: Throwable) {
-        updateUiState { copy(loading = false, errorMessage = throwable.message) }
+        launchSafe {
+            updateUiState { copy(loading = false, errorMessage = throwable.message) }
+        }
     }
 
     private fun onSuccess(event: Unit) {
-        updateUiState { copy(loading = false) }
+        launchSafe {
+            updateUiState { copy(loading = false) }
+        }
     }
 
     private suspend fun onPicturesUpdated(pictures: List<Picture>) {
         logW("pictures comes to view model, size: ${pictures.size}")
-        updateUiState { copy(loading = pictures.isEmpty(), pictures = pictures.map(pictureMapper::map)) }
+        updateUiState { copy(loading = false, pictures = pictures.map(pictureMapper::map)) }
     }
 
-    private fun updateUiState(update: PicturesUiState.() -> PicturesUiState) {
-        _uiState.getAndUpdate(update)
+    private suspend fun updateUiState(update: PicturesUiState.() -> PicturesUiState) {
+        mutex.withLock {
+            _uiState.getAndUpdate(update)
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.zezekalo.pixabaytest.presentation.ui.fragment
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
@@ -9,6 +10,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zezekalo.pixabaytest.domain.logger.logD
 import com.zezekalo.pixabaytest.domain.logger.logI
 import com.zezekalo.pixabaytest.domain.logger.logW
@@ -19,6 +21,7 @@ import com.zezekalo.pixabaytest.presentation.ui.adapter.PicturesAdapter
 import com.zezekalo.pixabaytest.presentation.ui.adapter.PicturesDiffUtilCallback
 import com.zezekalo.pixabaytest.presentation.viewmodel.PicturesUiState
 import com.zezekalo.pixabaytest.presentation.viewmodel.PicturesViewModel
+import com.zezekalo.pixabaytest.presentation.viewmodel.ShowDialogEvent
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -82,9 +85,9 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
     }
 
     private fun onUiStateChanged(uiState: PicturesUiState) {
-        logI("fragment: pictures comes from view model, size: ${uiState.pictures.size}")
         onLoadingChanged(uiState.loading)
         onPicturesUpdated(uiState.pictures)
+        onShowDialogEvent(uiState.showDialog)
     }
 
     private fun onLoadingChanged(isLoading: Boolean) {
@@ -95,13 +98,43 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
         adapter.submitList(pictures)
     }
 
-    private fun onItemClick(item: UiPicture?) {
-        item?.let { showDialog(it) } ?: logW("Unexpected null on picture click!")
+    private fun onShowDialogEvent(event: ShowDialogEvent?) {
+        event?.let {
+            showDialog(it.pictureId)
+        }
     }
 
-    private fun showDialog(item: UiPicture) {
-        logI("Item click on item $item")
-        //TODO
+    private fun showDialog(pictureId: Int) {
+        MaterialAlertDialogBuilder(
+            requireContext(),
+            com.google.android.material.R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered)
+            .setMessage(getString(R.string.alert_dialog_message, pictureId))
+            .setNegativeButton(R.string.decline_button) { dialog,  _ ->
+                dismissDialogWithAction(dialog, null)
+            }
+            .setPositiveButton(R.string.accept_button) { dialog,  _ ->
+                dismissDialogWithAction(dialog) {
+                    navigateToPictureDetails(pictureId)
+                }
+            }.setOnDismissListener { notifyDialogIsShown() }
+            .show()
+    }
+
+    private fun dismissDialogWithAction(dialog: DialogInterface, action: (() -> Unit)?) {
+        dialog.dismiss()
+        action?.invoke()
+    }
+
+    private fun navigateToPictureDetails(pictureId: Int) {
+
+    }
+
+    private fun notifyDialogIsShown() {
+        viewModel.updateUiStateToShowDialogOrHide(null)
+    }
+
+    private fun onItemClick(item: UiPicture?) {
+        item?.let { viewModel.updateUiStateToShowDialogOrHide(item.id) } ?: logW("Unexpected null when picture item is clicked!")
     }
 
     override fun onDestroyView() {
