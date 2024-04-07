@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zezekalo.pixabaytest.domain.common.CoroutineExecutor
+import com.zezekalo.pixabaytest.domain.common.PresentationDataDelegate
 import com.zezekalo.pixabaytest.domain.entity.Picture
 import com.zezekalo.pixabaytest.domain.logger.logW
 import com.zezekalo.pixabaytest.domain.repository.PictureRepository
@@ -11,8 +12,6 @@ import com.zezekalo.pixabaytest.presentation.entity.UiPicture
 import com.zezekalo.pixabaytest.presentation.entity.mapper.UiPictureMapper
 import com.zezekalo.pixabaytest.presentation.util.Debounce
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineDispatcher
-import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -38,17 +37,11 @@ class PicturesViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val repository: PictureRepository,
     private val pictureMapper: UiPictureMapper,
-): ViewModel(), CoroutineExecutor {
+    private val presentationDataDelegate: PresentationDataDelegate,
+): ViewModel(), CoroutineExecutor, PresentationDataDelegate by presentationDataDelegate {
 
     override val scope: CoroutineScope
         get() = viewModelScope
-    override val backgroundDispatcher: CoroutineDispatcher
-        get() = Dispatchers.Default
-
-    override val coroutineExceptionHandler: CoroutineExceptionHandler =
-        CoroutineExceptionHandler { coroutineContext, throwable ->
-
-        }
 
     val debounce: Debounce = Debounce(scope, 1_000L) {
         queryForPicturesByKey(it)

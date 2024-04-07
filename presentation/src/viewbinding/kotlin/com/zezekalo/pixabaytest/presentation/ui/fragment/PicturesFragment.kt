@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.zezekalo.pixabaytest.domain.logger.logD
 import com.zezekalo.pixabaytest.domain.logger.logI
 import com.zezekalo.pixabaytest.domain.logger.logW
@@ -92,6 +93,7 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
         onLoadingChanged(uiState.loading)
         onPicturesUpdated(uiState.pictures)
         onShowDialogEvent(uiState.showDialog)
+        onErrorReceived(uiState.errorMessage)
     }
 
     private fun onLoadingChanged(isLoading: Boolean) {
@@ -105,6 +107,13 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
     private fun onShowDialogEvent(event: ShowDialogEvent?) {
         event?.let {
             showDialog(it.pictureId)
+        }
+    }
+
+    private fun onErrorReceived(errorMessage: String?) {
+        errorMessage?.let {
+            showError(it)
+            viewModel.updateUiStateToShowErrorOrNot(null)
         }
     }
 
@@ -140,6 +149,14 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
 
     private fun onItemClick(item: UiPicture?) {
         item?.let { viewModel.updateUiStateToShowDialogOrHide(item.id) } ?: logW("Unexpected null when picture item is clicked!")
+    }
+
+    private fun showError(message: String) {
+        Snackbar.make(
+            viewBinding.rootLayout,
+            getString(R.string.error_message_pattern, message),
+            Snackbar.LENGTH_LONG
+        ).also { it.show() }
     }
 
     override fun onDestroyView() {

@@ -7,7 +7,7 @@ data class RemotePicture(
     @SerializedName("user") val user: String,
     @SerializedName("tags") val tags: String,
     @SerializedName("previewURL") val thumbnailUrl: String,
-    @SerializedName("userImageURL") val bigImageUrl: String?,
+    @SerializedName("largeImageURL") val bigImageUrl: String?,
     @SerializedName("likes") val likeCount: Int,
     @SerializedName("downloads") val downloadCount: Int,
     @SerializedName("comments") val commentCount: Int

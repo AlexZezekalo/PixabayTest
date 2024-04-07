@@ -66,11 +66,11 @@ class PictureDetailsFragment : Fragment(R.layout.fragment_picture_details) {
     }
 
     private fun onPictureUpdated(picture: UiPictureDetails) {
-        with(viewBinding) {
-            bigPicture.load(picture.bigImageUrl) {
-                crossfade(true)
-                crossfade(500)
-            }
+        viewBinding.bigPicture.load(picture.bigImageUrl) {
+            crossfade(true)
+            crossfade(500)
+        }
+        with(viewBinding.pictureDetails) {
             user.text = getString(R.string.user_template, picture.user)
             tags.text = getString(R.string.tags_template, picture.tagsAsString())
             likes.text = getString(R.string.likes_template, picture.likeCount)

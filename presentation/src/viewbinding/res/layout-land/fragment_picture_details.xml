@@ -35,13 +35,13 @@
                 android:padding="16dp"
                 android:orientation="vertical"
                 android:visibility="gone"
-                tools:visibility="visible">
+                tools:visibility="gone">
 
             <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/error"
                     style="@style/TextStyle.Error"
                     android:layout_margin="16dp"
-                    tools:text="Something went wrong! Try again later"/>
+                    tools:text = "Something went wrong! Try again later"/>
             <com.google.android.material.button.MaterialButton
                     android:id="@+id/returnButton"
                     android:layout_width="wrap_content"
@@ -51,18 +51,22 @@
                     style="@style/Widget.MaterialComponents.Button"/>
         </LinearLayout>
 
-        <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/bigPicture"
-                style="@style/BigImageStyle"
-                tools:src="@android:drawable/btn_star"/>
+        <LinearLayout
+                style="@style/Fill">
 
-        <include
-                android:id="@+id/pictureDetails"
-                layout="@layout/picture_details_layout"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                tools:ignore="InefficientWeight"/>
+            <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/bigPicture"
+                    style="@style/BigImageStyle"
+                    tools:src = "@android:drawable/btn_star"/>
+
+            <include
+                    android:id="@+id/pictureDetails"
+                    layout="@layout/picture_details_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 
