@@ -8,6 +8,8 @@ interface LocalPictureDataSource {
 
     val picturesFlow: Flow<List<Picture>>
 
+    suspend fun getPictureById(pictureId: Int): Picture?
+
     suspend fun cleanAndStorePictures(pictures: List<LocalPicture>)
 
     suspend fun cleanPictures()

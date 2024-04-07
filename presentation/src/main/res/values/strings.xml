@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Pixabay Sample</string>
     <string name="user_template">User: %1$s</string>
     <string name="tags_template">Tags: %1$s</string>
@@ -10,4 +10,8 @@
     <string name="alert_dialog_message">Do you want to see picture details with id %1$d?</string>
     <string name="accept_button">Accept</string>
     <string name="decline_button">Decline</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="return_button">Return</string>
+    <string name="error_message_pattern">%1$s, try again later</string>
+    <string name="picture_details_title">Picture details for id: %1$d</string>
 </resources>

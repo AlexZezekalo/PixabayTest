@@ -9,4 +9,6 @@ interface PictureRepository {
     val picturesFlow: Flow<List<Picture>>
 
     suspend fun queryPictures(queryString: String): Result<Unit>
+
+    suspend fun getPictureById(pictureId: Int): Result<Picture>
 }

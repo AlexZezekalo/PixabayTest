@@ -1,34 +1,42 @@
 package com.zezekalo.pixabaytest.di
 
-import com.zezekalo.pixabaytest.domain.di.Background
+import com.zezekalo.pixabaytest.domain.common.PresentationDataDelegate
+import com.zezekalo.pixabaytest.domain.di.Default
+import com.zezekalo.pixabaytest.domain.di.Foreground
+import com.zezekalo.pixabaytest.domain.di.Io
+import com.zezekalo.pixabaytest.presentation.util.getSafeCoroutineExceptionHandler
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 
 @InstallIn(ViewModelComponent::class)
 @Module
 class CoroutineModule {
 
     @Provides
-    @Background
+    @Default
     fun provideDefaultCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.Default
 
     @Provides
-    fun provideCoroutineScope(
-        dispatcher: CoroutineDispatcher,
-        coroutineExceptionHandler: CoroutineExceptionHandler
-    ): CoroutineScope =
-        CoroutineScope(SupervisorJob() + dispatcher + coroutineExceptionHandler)
+    @Io
+    fun provideMainCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.Main
 
     @Provides
-    fun provideCoroutineExceptionHandler(): CoroutineExceptionHandler =
-        CoroutineExceptionHandler { coroutineContext, throwable ->
+    @Foreground
+    fun provideIoCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
-        }
+    @Provides
+    fun providePresentationDataDelegate(
+        @Default coroutineDispatcher: CoroutineDispatcher
+    ): PresentationDataDelegate = object : PresentationDataDelegate {
+
+        override val backgroundDispatcher: CoroutineDispatcher
+            get() = coroutineDispatcher
+        override val coroutineExceptionHandler: CoroutineExceptionHandler
+            get() = getSafeCoroutineExceptionHandler()
+    }
 }

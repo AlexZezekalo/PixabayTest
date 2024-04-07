@@ -4,6 +4,7 @@ import com.zezekalo.pixabaytest.data.datasource.local.LocalPictureDataSource
 import com.zezekalo.pixabaytest.data.datasource.mapper.toLocal
 import com.zezekalo.pixabaytest.data.datasource.remote.RemotePictureDataSource
 import com.zezekalo.pixabaytest.domain.entity.Picture
+import com.zezekalo.pixabaytest.domain.exception.DomainException
 import com.zezekalo.pixabaytest.domain.logger.logE
 import com.zezekalo.pixabaytest.domain.repository.PictureRepository
 import kotlinx.coroutines.Dispatchers
@@ -31,4 +32,12 @@ class PictureRepositoryImpl @Inject constructor(
             Result.failure(throwable)
         }
 
+    override suspend fun getPictureById(pictureId: Int): Result<Picture> {
+        val picture = localPictureDataSource.getPictureById(pictureId)
+        return if (picture != null) {
+            Result.success(picture)
+        } else {
+            Result.failure(DomainException.PictureNotFound())
+        }
+    }
 }

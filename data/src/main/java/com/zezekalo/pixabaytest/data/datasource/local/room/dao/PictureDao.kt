@@ -16,6 +16,9 @@ interface PictureDao {
     @Insert
     fun insertInDb(pictures: List<LocalPicture>)
 
+    @Query("SELECT * FROM pictures WHERE id = :id")
+    fun getPictureById(id: Int): LocalPicture?
+
     @Query("DELETE FROM pictures")
     fun clean()
 

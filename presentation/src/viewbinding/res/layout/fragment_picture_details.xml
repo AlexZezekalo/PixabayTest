@@ -1,63 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.fragment.PictureDetailsFragment"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="8dp">
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        style="@style/Fill.Vertical"
+        tools:context=".ui.fragment.PictureDetailsFragment">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/bigPicture"
-        style="@style/BigImageStyle"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:src = "@android:drawable/btn_star"/>
+    <com.google.android.material.appbar.AppBarLayout
+            style="@style/Wide">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/user"
-        style="@style/TextStyle"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toEndOf="@id/bigPicture"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/bigPicture"
-        tools:text = "User: Ololoshko"/>
+        <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:navigationIcon="@drawable/ic_browser_back_button"
+                app:navigationIconTint="#BCBCBC"
+                style="@style/Widget.MaterialComponents.Toolbar.Primary"/>
+    </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/tags"
-        style="@style/TextStyle.Tag.Details"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintStart_toStartOf="@id/user"
-        app:layout_constraintTop_toBottomOf="@id/user"
-        app:layout_constraintBottom_toBottomOf="@id/bigPicture"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.5"
-        tools:text = "Tags: fruits, \n animals, \n vegetables, \n music"/>
+    <LinearLayout
+            style="@style/Fill.Vertical">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/likes"
-        style="@style/TextStyle.Footer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/comments"
-        app:layout_constraintTop_toBottomOf="@id/bigPicture"
-        tools:text = "Likes: 145"/>
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                tools:visibility="visible"/>
+        <LinearLayout
+            android:id="@+id/errorLayout"
+            style="@style/Wide"
+            android:padding="16dp"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/comments"
-        style="@style/TextStyle.Footer"
-        app:layout_constraintStart_toEndOf="@id/likes"
-        app:layout_constraintEnd_toStartOf="@id/downloads"
-        app:layout_constraintTop_toTopOf="@id/likes"
-        tools:text = "Comments: 45"/>
+            <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/error"
+                    style="@style/TextStyle.Error"
+                    android:layout_margin="16dp"
+                    tools:text = "Something went wrong! Try again later"/>
+            <com.google.android.material.button.MaterialButton
+                    android:id="@+id/returnButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/return_button"
+                    android:layout_gravity="center"
+                    style="@style/Widget.MaterialComponents.Button"/>
+        </LinearLayout>
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/downloads"
-        style="@style/TextStyle.Footer"
-        app:layout_constraintStart_toEndOf="@id/comments"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintTop_toTopOf="@id/likes"
-        tools:text = "Downloads: 555"/>
+        <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/bigPicture"
+                style="@style/BigImageStyle"
+                tools:src = "@android:drawable/btn_star"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                tools:ignore="InefficientWeight">
+
+            <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/user"
+                    style="@style/TextStyle.User.Details"
+                    android:layout_margin="16dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text = "User: Ololoshko"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tags"
+                    style="@style/TextStyle.Tag.Details"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintStart_toStartOf="@id/user"
+                    app:layout_constraintTop_toBottomOf="@id/user"
+                    app:layout_constraintEnd_toEndOf="@id/user"
+                    tools:text = "Tags: fruits, \n animals, vegetables, music"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/likes"
+                    style="@style/TextStyle.Count"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/comments"
+                    app:layout_constraintTop_toBottomOf="@id/tags"
+                    tools:text = "Likes: \n 145"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/comments"
+                    style="@style/TextStyle.Count"
+                    app:layout_constraintStart_toEndOf="@id/likes"
+                    app:layout_constraintEnd_toStartOf="@id/downloads"
+                    app:layout_constraintTop_toTopOf="@id/likes"
+                    tools:text = "Comments: \n 45"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/downloads"
+                    style="@style/TextStyle.Count"
+                    app:layout_constraintStart_toEndOf="@id/comments"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintTop_toTopOf="@id/likes"
+                    tools:text = "Downloads: \n 555"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

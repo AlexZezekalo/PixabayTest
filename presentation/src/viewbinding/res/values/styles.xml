@@ -5,6 +5,10 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
+    <style name="Fill.Vertical">
+        <item name="android:orientation">vertical</item>
+    </style>
+
     <style name="Wrap">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -29,11 +33,7 @@
     </style>
 
     <style name="TextStyle.User">
-
-    </style>
-
-    <style name="TextStyle.Footer">
-        <item name="android:layout_width">0dp</item>
+        <item name="android:maxLines">1</item>
     </style>
 
     <style name="TextStyle.Tag">
@@ -41,10 +41,27 @@
         <item name="android:maxLines">3</item>
     </style>
 
-    <style name="TextStyle.Tag.Details">
-        <item name="android:maxLines">5</item>
+    <style name="TextStyle.User.Details">
+        <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="TextStyle.Tag.Details">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="TextStyle.Count">
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:lines">2</item>
+    </style>
+
+    <style name="TextStyle.Error">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:maxLines">3</item>
+    </style>
 
     <style name="ThumbnailStyle">
         <item name="android:layout_width">@dimen/thumbnail_size</item>
@@ -53,8 +70,9 @@
     </style>
 
     <style name="BigImageStyle">
-        <item name="android:layout_width">@dimen/big_image_size</item>
-        <item name="android:layout_height">@dimen/big_image_size</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_weight">1</item>
         <item name="android:scaleType">centerCrop</item>
     </style>
 </resources>

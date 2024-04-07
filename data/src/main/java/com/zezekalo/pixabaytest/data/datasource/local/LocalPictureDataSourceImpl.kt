@@ -15,6 +15,9 @@ class LocalPictureDataSourceImpl @Inject constructor(
     override val picturesFlow: Flow<List<Picture>>
         get() = appDatabase.pictureDao().observeAllPictures().map { it.toDomain() }
 
+    override suspend fun getPictureById(pictureId: Int): Picture? =
+        appDatabase.pictureDao().getPictureById(pictureId)?.toDomain()
+
     override suspend fun cleanAndStorePictures(pictures: List<LocalPicture>) {
         appDatabase.pictureDao().cleanAndInsertInDb(pictures)
     }

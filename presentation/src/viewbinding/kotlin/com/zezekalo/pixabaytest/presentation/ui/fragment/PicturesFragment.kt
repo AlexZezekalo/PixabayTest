@@ -3,6 +3,7 @@ package com.zezekalo.pixabaytest.presentation.ui.fragment
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.zezekalo.pixabaytest.domain.logger.logD
 import com.zezekalo.pixabaytest.domain.logger.logI
@@ -37,6 +39,8 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
     private val adapter: PicturesAdapter by lazy {
         PicturesAdapter(PicturesDiffUtilCallback(), ::onItemClick)
     }
+
+    private var dialog: AlertDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -105,11 +109,10 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
     }
 
     private fun showDialog(pictureId: Int) {
-        MaterialAlertDialogBuilder(
-            requireContext(),
-            com.google.android.material.R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Centered)
+        dialog?.cancel()
+        dialog = MaterialAlertDialogBuilder(requireContext())
             .setMessage(getString(R.string.alert_dialog_message, pictureId))
-            .setNegativeButton(R.string.decline_button) { dialog,  _ ->
+            .setNeutralButton(R.string.cancel_button) { dialog,  _ ->
                 dismissDialogWithAction(dialog, null)
             }
             .setPositiveButton(R.string.accept_button) { dialog,  _ ->
@@ -117,16 +120,18 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
                     navigateToPictureDetails(pictureId)
                 }
             }.setOnDismissListener { notifyDialogIsShown() }
-            .show()
+            .create().also { it.show() }
     }
 
     private fun dismissDialogWithAction(dialog: DialogInterface, action: (() -> Unit)?) {
+        notifyDialogIsShown()
         dialog.dismiss()
         action?.invoke()
     }
 
     private fun navigateToPictureDetails(pictureId: Int) {
-
+        val action = PicturesFragmentDirections.actionPicturesFragmentToPictureDetailsFragment(pictureId)
+        findNavController().navigate(action)
     }
 
     private fun notifyDialogIsShown() {

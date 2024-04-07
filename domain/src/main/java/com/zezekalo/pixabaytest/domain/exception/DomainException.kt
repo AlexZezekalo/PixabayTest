@@ -18,4 +18,8 @@ sealed class DomainException(
         val code: Int,
         val errorMessage: String,
     ) : DomainException(message)
+
+    data class PictureNotFound(
+        override val message: String = "Picture data isn't found in cache"
+    ) : DomainException(message)
 }
