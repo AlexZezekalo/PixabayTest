@@ -23,9 +23,11 @@ android {
         create("viewbinding") {
             dimension  = "ui"
         }
+/*
         create("compose") {
             dimension = "ui"
         }
+*/
     }
 
     buildTypes {

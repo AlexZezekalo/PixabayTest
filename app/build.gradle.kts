@@ -28,11 +28,13 @@ android {
             applicationIdSuffix  = ".viewbinding"
             versionNameSuffix  = "-viewbinding"
         }
+/*
         create("compose") {
             dimension = "ui"
             applicationIdSuffix = ".compose"
             versionNameSuffix = "-compose"
         }
+*/
     }
     buildTypes {
         getByName("release") {
