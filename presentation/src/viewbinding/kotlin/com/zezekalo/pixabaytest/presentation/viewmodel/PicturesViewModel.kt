@@ -12,6 +12,8 @@ import com.zezekalo.pixabaytest.presentation.entity.mapper.UiPictureMapper
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
@@ -47,6 +49,7 @@ class PicturesViewModel @Inject constructor(
     val query: StateFlow<String>
         get() = _query
 
+    @OptIn(FlowPreview::class, ExperimentalCoroutinesApi::class)
     private val startQueryResult: Flow<Unit> = _query.debounce(1_000).mapLatest { key ->
         queryForPicturesByKey(key)
     }
@@ -73,17 +76,9 @@ class PicturesViewModel @Inject constructor(
         }
     }
 
-    fun updateUiStateToShowErrorOrNot(errorMessage: String?) {
-        launchSafe {
-            updateUiState {
-                copy(errorMessage = errorMessage)
-            }
-        }
-    }
-
     private fun queryForPicturesByKey(key: String) {
         launchSafe(context = Dispatchers.IO) {
-            updateUiState { copy(loading = true, errorMessage = null, showDialog = null) }
+            updateUiState { copy(loading = true, errorMessage = null, showDialog = null, shouldShowEmpty = false) }
             repository.queryPictures(key)
                 .onFailure(::onFail)
                 .onSuccess(::onSuccess)

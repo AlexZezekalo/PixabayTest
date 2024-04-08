@@ -63,7 +63,7 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
             addTransitionListener { _, _, newState->
                 onBackPressedCallback.isEnabled = newState == SearchView.TransitionState.SHOWN
             }
-
+            editText.setText(viewModel.query.value)
             editText.addTextChangedListener { text ->
                 viewModel.setQuery(text.toString())
             }
@@ -141,8 +141,11 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
                 dismissDialogWithAction(dialog) {
                     navigateToPictureDetails(pictureId)
                 }
-            }.setOnDismissListener { notifyDialogIsShown() }
-            .create().also { it.show() }
+            }.create().also {
+                it.setCancelable(false)
+                it.setCanceledOnTouchOutside(false)
+                it.show()
+            }
     }
 
     private fun dismissDialogWithAction(dialog: DialogInterface, action: (() -> Unit)?) {

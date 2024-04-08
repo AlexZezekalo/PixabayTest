@@ -1,9 +1,10 @@
 package com.zezekalo.pixabaytest.data.datasource.remote
 
-
 import com.zezekalo.pixabaytest.data.BuildConfig
 import com.zezekalo.pixabaytest.data.datasource.remote.entity.RemotePicture
 import com.zezekalo.pixabaytest.domain.exception.DomainException
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okio.IOException
 import retrofit2.HttpException
 import javax.inject.Inject
@@ -13,14 +14,16 @@ class RemotePictureDataSourceImpl @Inject constructor(
 ) : RemotePictureDataSource {
 
     override suspend fun getPictures(query: String): List<RemotePicture> =
-        try {
-            apiService.getPictures(
-                key = BuildConfig.API_KEY,
-                query = query,
-                imageType = IMAGE_TYPE
-            ).pictures
-        } catch (e: Exception) {
-            throw mapToDomainException(e)
+        withContext(Dispatchers.IO) {
+            try {
+                apiService.getPictures(
+                    key = BuildConfig.API_KEY,
+                    query = query,
+                    imageType = IMAGE_TYPE
+                ).pictures
+            } catch (e: Exception) {
+                throw mapToDomainException(e)
+            }
         }
 
 
