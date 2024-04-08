@@ -3,6 +3,7 @@ package com.zezekalo.pixabaytest.presentation.ui.fragment
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -13,9 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
-import com.zezekalo.pixabaytest.domain.logger.logD
-import com.zezekalo.pixabaytest.domain.logger.logI
+import com.google.android.material.search.SearchView
 import com.zezekalo.pixabaytest.domain.logger.logW
 import com.zezekalo.pixabaytest.presentation.R
 import com.zezekalo.pixabaytest.presentation.databinding.FragmentPicturesBinding
@@ -26,6 +25,7 @@ import com.zezekalo.pixabaytest.presentation.viewmodel.PicturesUiState
 import com.zezekalo.pixabaytest.presentation.viewmodel.PicturesViewModel
 import com.zezekalo.pixabaytest.presentation.viewmodel.ShowDialogEvent
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -41,6 +41,12 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
         PicturesAdapter(PicturesDiffUtilCallback(), ::onItemClick)
     }
 
+    private val onBackPressedCallback: OnBackPressedCallback = object : OnBackPressedCallback(false) {
+        override fun handleOnBackPressed() {
+            hideSearchView()
+        }
+    }
+
     private var dialog: AlertDialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -51,30 +57,30 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
         observeState()
     }
 
+    private fun initSearch(){
+        requireActivity().onBackPressedDispatcher.addCallback(requireActivity(), onBackPressedCallback)
+        with(viewBinding.pictureSearchInput) {
+            addTransitionListener { _, _, newState->
+                onBackPressedCallback.isEnabled = newState == SearchView.TransitionState.SHOWN
+            }
+
+            editText.addTextChangedListener { text ->
+                viewModel.setQuery(text.toString())
+            }
+            editText.setOnEditorActionListener { _, _, _ ->
+                hideSearchView()
+                return@setOnEditorActionListener false
+            }
+        }
+    }
+
+    private fun hideSearchView() {
+        viewBinding.pictureSearchInput.hide()
+    }
+
     private fun initViews() {
+        initSearch()
         initAdapter()
-
-        viewBinding.pictureSearchInput.editText.addTextChangedListener { text ->
-            logD("addTextChangedListener: text: $text")
-        }
-        viewBinding.pictureSearchInput.editText.setOnEditorActionListener { view, actionId, event ->
-            logI("setOnEditorActionListener: actionId: $actionId; event: $event; text: ${view.text}")
-            //TODO
-            return@setOnEditorActionListener false
-        }
-
-//        QueryTextListener(
-//            object : SearchView.OnQueryTextListener {
-//
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                return true
-//            }
-//
-//            override fun onQueryTextChange(newText: String): Boolean {
-//                viewModel.debounce.offer(newText)
-//                return true
-//            }
-//        })
     }
 
     private fun initAdapter() {
@@ -84,14 +90,19 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
     private fun observeState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch { viewModel.uiState.collect(::onUiStateChanged) }
+                launch { viewModel.uiState.collectLatest(::onUiStateChanged) }
+                launch { viewModel.query.collectLatest(::onQueryUpdated) }
             }
         }
     }
 
+    private fun onQueryUpdated(query: String) {
+        viewBinding.pictureSearchBar.setText(query)
+    }
+
     private fun onUiStateChanged(uiState: PicturesUiState) {
         onLoadingChanged(uiState.loading)
-        onPicturesUpdated(uiState.pictures)
+        onPicturesUpdated(uiState.pictures, uiState.shouldShowEmpty)
         onShowDialogEvent(uiState.showDialog)
         onErrorReceived(uiState.errorMessage)
     }
@@ -100,8 +111,13 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
         viewBinding.spinner.isVisible = isLoading
     }
 
-    private fun onPicturesUpdated(pictures: List<UiPicture>) {
+    private fun onPicturesUpdated(pictures: List<UiPicture>, shouldShowEmpty: Boolean) {
         adapter.submitList(pictures)
+        showEmptyMessage(pictures.isEmpty() && shouldShowEmpty)
+    }
+
+    private fun showEmptyMessage(showEmpty: Boolean) {
+        viewBinding.queryResult.isVisible = showEmpty
     }
 
     private fun onShowDialogEvent(event: ShowDialogEvent?) {
@@ -111,10 +127,7 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
     }
 
     private fun onErrorReceived(errorMessage: String?) {
-        errorMessage?.let {
-            showError(it)
-            viewModel.updateUiStateToShowErrorOrNot(null)
-        }
+        showError(errorMessage)
     }
 
     private fun showDialog(pictureId: Int) {
@@ -151,12 +164,9 @@ class PicturesFragment : Fragment(R.layout.fragment_pictures) {
         item?.let { viewModel.updateUiStateToShowDialogOrHide(item.id) } ?: logW("Unexpected null when picture item is clicked!")
     }
 
-    private fun showError(message: String) {
-        Snackbar.make(
-            viewBinding.rootLayout,
-            getString(R.string.error_message_pattern, message),
-            Snackbar.LENGTH_LONG
-        ).also { it.show() }
+    private fun showError(message: String?) {
+        viewBinding.error.text = getString(R.string.error_message_pattern, message)
+        viewBinding.error.isVisible = message?.isNotEmpty() == true
     }
 
     override fun onDestroyView() {

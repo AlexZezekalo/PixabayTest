@@ -14,4 +14,5 @@
     <string name="return_button">Return</string>
     <string name="error_message_pattern">%1$s, try again later</string>
     <string name="picture_details_title">Picture details for id: %1$d</string>
+    <string name="not_found_any_picture">No images were found matching your request. \nTry again later!</string>
 </resources>

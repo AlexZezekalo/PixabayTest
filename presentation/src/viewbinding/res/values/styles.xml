@@ -58,8 +58,19 @@
     <style name="TextStyle.Error">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/colorError</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">18sp</item>
+        <item name="android:maxLines">3</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="TextStyle.Result">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">8dp</item>
         <item name="android:maxLines">3</item>
     </style>
 

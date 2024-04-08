@@ -29,6 +29,7 @@ class PictureRepositoryImpl @Inject constructor(
             Result.success(Unit)
         } catch (throwable: Throwable) {
             logE("Caught an exception ${throwable.message}", throwable)
+            localPictureDataSource.cleanPictures()
             Result.failure(throwable)
         }
 
