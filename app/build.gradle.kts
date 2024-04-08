@@ -16,7 +16,7 @@ android {
         versionCode = libs.versions.versionCode.get().toInt()
         versionName = libs.versions.versionName.get()
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.zezekalo.pixabaytest.TestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -55,10 +55,20 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            merges += "META-INF/LICENSE.md"
+            merges += "META-INF/LICENSE-notice.md"
         }
     }
     buildFeatures {
         buildConfig = true
+    }
+    testOptions {
+        animationsDisabled = true
+        packaging {
+            jniLibs {
+                useLegacyPackaging = true
+            }
+        }
     }
 }
 
@@ -76,5 +86,12 @@ dependencies {
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.bundles.espresso)
+    androidTestImplementation(libs.bundles.mockk)
+    androidTestImplementation(libs.androidx.fragment.testing)
+    androidTestImplementation(libs.androidx.navigation.testing)
+    kaptAndroidTest (libs.hilt.compiler)
+    androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.androidx.arch.core.testing)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
 }
